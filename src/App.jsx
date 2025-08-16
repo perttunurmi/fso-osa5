@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import Blogform from './components/Blogform'
 import Loginform from './components/Loginform'
-import Togglabe from './components/Togglable'
+import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -51,7 +51,6 @@ const App = () => {
         setMessage(null)
       }, 5000)
     } catch (ex) {
-      console.log(ex)
       setMessage('Error while adding the blog')
       setTimeout(() => {
         setMessage(null)
@@ -93,9 +92,9 @@ const App = () => {
           > logout </button>
         </div>
         <br />
-        <Togglabe buttonLabel="add blog" ref={blogFormRef}>
+        <Togglable buttonLabel="add blog" ref={blogFormRef}>
           <Blogform createBlog={addBlog} />
-        </Togglabe>
+        </Togglable>
         <br />
         <div>
           {blogs.map(blog =>
