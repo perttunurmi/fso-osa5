@@ -11,6 +11,19 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const [message, setMessage] = useState('')
+
+  const Notification = ({ message }) => {
+    if (!message) {
+      return null
+    }
+
+    return (
+      <div className='error'>
+        {message}
+      </div>
+    )
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -24,8 +37,9 @@ const App = () => {
       setPassword('')
       window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
     } catch (ex) {
-      alert('wrong credentials')
+      setMessage("Wrong username or password")
       setTimeout(() => {
+        setMessage(null)
       }, 5000)
     }
   }
@@ -38,8 +52,15 @@ const App = () => {
     try {
       const blog = { title, author, url }
       await blogService.create(blog)
+      setMessage(`Added ${title} from ${author}`)
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
     } catch (ex) {
-      console.log(ex)
+      setMessage('Error while adding the blog')
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
     }
   }
 
@@ -53,13 +74,15 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
+    blogService.getAll().then((blogs) => {
       setBlogs(blogs)
+    }
     )
   }, [addBlog])
 
   if (!user) {
     return <form onSubmit={handleSubmit}>
+      <Notification message={message} />
       <h2>log in</h2>
       <div>
         username
@@ -90,10 +113,15 @@ const App = () => {
   } else {
     return (
       <div>
+        <Notification message={message} />
         <h2>blogs</h2>
         <div>
           logged in as {user.username}
-          <button onClick={() => { window.localStorage.removeItem('loggedBlogappUser'); setUser(null) }}> logout </button>
+          <button onClick={() => {
+            window.localStorage.removeItem('loggedBlogappUser');
+            setUser(null)
+          }}
+          > logout </button>
         </div>
         <br />
         <form onSubmit={addBlog}>
@@ -123,7 +151,6 @@ const App = () => {
               value={url}
               type="text"
               name="url"
-              required
               onChange={({ target }) => setUrl(target.value)}
             />
           </div>
