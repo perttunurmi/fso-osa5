@@ -1,7 +1,9 @@
 import { useState } from "react"
+import blogs from "../services/blogs"
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog: initialBlog }) => {
   const [showExtra, setShowExtra] = useState(false)
+  const [blog, setBlog] = useState(initialBlog)
 
   const toggleExtra = () => {
     if (showExtra) {
@@ -9,6 +11,13 @@ const Blog = ({ blog }) => {
     } else {
       setShowExtra(true)
     }
+  }
+
+  const addLike = async () => {
+    initialBlog.likes++
+    const response = await blogs.update(initialBlog)
+    response.likes++
+    setBlog(response)
   }
 
   const blogStyle = {
@@ -22,23 +31,23 @@ const Blog = ({ blog }) => {
   if (!showExtra) {
     return (
       <div style={blogStyle}>
-        {blog.title} {blog.author} <button onClick={toggleExtra}> show </button>
+        {blog.title} {initialBlog.author} <button onClick={toggleExtra}> show </button>
       </div >
     )
   } else {
     return (
       <div style={blogStyle}>
         <div>
-          {blog.title} {blog.author} <button onClick={toggleExtra}> hide </button>
+          {initialBlog.title} {initialBlog.author} <button onClick={toggleExtra}> hide </button>
         </div>
         <div>
-          url: {blog.url || ""}
+          url: {initialBlog.url || ""}
         </div>
         <div>
-          likes: {blog.likes || 0} <button> likes </button>
+          likes: {blog.likes || 0} <button onClick={addLike}> likes </button>
         </div>
         <div>
-          {blog.user.name || ""}
+          {initialBlog.user.name || ""}
         </div>
       </div >
     )
