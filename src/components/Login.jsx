@@ -1,11 +1,11 @@
-const Login = ({ }) => (
-  <form onSubmit={""}>
+const Login = () => (
+  <form onSubmit={''}>
     <div>
-      <label for="username">username</label>
+      <label htmlFor="username">username</label>
       <input id="username" type="text" required />
     </div>
     <div>
-      <label for="password">password</label>
+      <label htmlFor="password">password</label>
       <input id="password" type="text" required />
     </div>
     <div>

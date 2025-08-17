@@ -72,7 +72,7 @@ const App = () => {
       setUser(user)
       window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
     } catch (ex) {
-      setMessage("Wrong username or password")
+      setMessage('Wrong username or password')
       setTimeout(() => {
         setMessage(null)
       }, 5000)
@@ -93,7 +93,7 @@ const App = () => {
         <div>
           logged in as {user.username}
           <button onClick={() => {
-            window.localStorage.removeItem('loggedBlogappUser');
+            window.localStorage.removeItem('loggedBlogappUser')
             setUser(null)
           }}
           > logout </button>

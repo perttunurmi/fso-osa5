@@ -1,9 +1,18 @@
-import { useState } from "react"
-import blogs from "../services/blogs"
+import { useState } from 'react'
+import blogs from '../services/blogs'
+import PropTypes from 'prop-types'
 
 const Blog = ({ blog: initialBlog, user, handleDelete }) => {
   const [showExtra, setShowExtra] = useState(false)
   const [blog, setBlog] = useState(initialBlog)
+
+  Blog.propTypes = {
+    blog: PropTypes.any.isRequired,
+    user: PropTypes.any.isRequired,
+    handleDelete: PropTypes.any.isRequired
+  }
+
+  Blog.displayName = 'Blog'
 
   const toggleExtra = () => {
     if (showExtra) {
@@ -28,9 +37,6 @@ const Blog = ({ blog: initialBlog, user, handleDelete }) => {
     marginBottom: 5
   }
 
-  console.log(blog)
-  console.log(initialBlog)
-
   if (!showExtra) {
     return (
       <div style={blogStyle}>
@@ -44,13 +50,13 @@ const Blog = ({ blog: initialBlog, user, handleDelete }) => {
           {initialBlog.title} {initialBlog.author} <button onClick={toggleExtra}> hide </button>
         </div>
         <div>
-          url: {initialBlog.url || ""}
+          url: {initialBlog.url || ''}
         </div>
         <div>
           likes: {blog.likes || 0} <button onClick={addLike}> likes </button>
         </div>
         <div>
-          {initialBlog.user.username || ""}
+          {initialBlog.user.username || ''}
         </div>
         <div>
           {user.username === initialBlog.user.username && <button onClick={() => {
