@@ -31,7 +31,7 @@ const App = () => {
 
   const Notification = ({ message }) => {
     if (!message) {
-      return null
+      return <div> <br /> </div>
     }
 
     return (
@@ -45,6 +45,7 @@ const App = () => {
     blogFormRef.current.toggleVisibility()
     try {
       const newBlog = await blogService.create(blogObj)
+      newBlog.user = user
       setBlogs(blogs.concat(newBlog))
       setMessage(`Added ${blogObj.title} from ${blogObj.author}`)
       setTimeout(() => {
@@ -56,6 +57,12 @@ const App = () => {
         setMessage(null)
       }, 5000)
     }
+  }
+
+  const deleteBlog = async (blog) => {
+    await blogService.deleteById(blog.id)
+    const newBlogs = blogs.filter((b) => b.id !== blog.id)
+    setBlogs(newBlogs)
   }
 
   const loginUser = async (userObj) => {
@@ -100,7 +107,7 @@ const App = () => {
           {blogs.sort((a, b) => {
             return b.likes - a.likes
           }).map(blog =>
-            <Blog key={blog.id} blog={blog} />
+            <Blog key={blog.id} blog={blog} user={user} handleDelete={deleteBlog} />
           )}
         </div>
       </div>
