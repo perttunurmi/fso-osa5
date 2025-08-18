@@ -1,10 +1,8 @@
 import { useState } from 'react'
-import blogs from '../services/blogs'
 import PropTypes from 'prop-types'
 
-const Blog = ({ blog: initialBlog, user, handleDelete }) => {
+const Blog = ({ blog, user, handleDelete, addLike }) => {
   const [showExtra, setShowExtra] = useState(false)
-  const [blog, setBlog] = useState(initialBlog)
 
   Blog.propTypes = {
     blog: PropTypes.any.isRequired,
@@ -22,13 +20,6 @@ const Blog = ({ blog: initialBlog, user, handleDelete }) => {
     }
   }
 
-  const addLike = async () => {
-    initialBlog.likes++
-    const response = await blogs.update(initialBlog)
-    response.likes++
-    setBlog(response)
-  }
-
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -40,26 +31,26 @@ const Blog = ({ blog: initialBlog, user, handleDelete }) => {
   if (!showExtra) {
     return (
       <div style={blogStyle}>
-        {blog.title} {initialBlog.author} <button onClick={toggleExtra}> show </button>
+        {blog.title} {blog.author} <button onClick={toggleExtra}> show </button>
       </div >
     )
   } else {
     return (
       <div style={blogStyle}>
         <div>
-          {initialBlog.title} {initialBlog.author} <button onClick={toggleExtra}> hide </button>
+          {blog.title} {blog.author} <button onClick={toggleExtra}> hide </button>
         </div>
         <div>
-          url: {initialBlog.url || ''}
+          url: {blog.url || ''}
         </div>
         <div>
-          likes: {blog.likes || 0} <button onClick={addLike}> likes </button>
+          likes: {blog.likes || 0} <button className='likeButton' onClick={() => addLike(blog)}> likes </button>
         </div>
         <div>
-          {initialBlog.user.username || ''}
+          {blog.user.username || ''}
         </div>
         <div>
-          {user.username === initialBlog.user.username && <button onClick={() => {
+          {user.username === blog.user.username && <button onClick={() => {
             window.confirm(`Remove blog ${blog.title} by ${blog.author}`)
               ? handleDelete(blog)
               : null
