@@ -13,7 +13,7 @@ test('renders content', () => {
     }
   }
 
-  render(<Blog blog={blog} />)
+  render(<Blog blog={blog} handleDelete={() => { }} />)
 
   const element = screen.getByText('Testi Testaaja')
   expect(element).toBeDefined()
@@ -26,5 +26,34 @@ test('renders content', () => {
 
   const likes = screen.queryByText('likes')
   expect(likes).toBeNull()
+
+})
+
+test('show extra info', async () => {
+  const user = userEvent.setup()
+
+  const userObj = {
+    username: 'root',
+    id: '12312313'
+  }
+
+  const blog = {
+    title: 'Testi',
+    author: 'Testaaja',
+    url: 'https://testi.fi',
+    likes: 5,
+    user: userObj
+  }
+
+  render(<Blog blog={blog} user={userObj} handleDelete={() => { }} />)
+
+  const button = screen.getByText('show')
+  await user.click(button)
+
+  const url = screen.getByText('url:', { exact: false })
+  expect(url).toBeDefined()
+
+  const likes = screen.getByText('likes:', { exact: false })
+  expect(likes).toBeDefined()
 
 })
