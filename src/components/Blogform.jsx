@@ -5,25 +5,14 @@ const Blogform = ({ createBlog }) => {
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
-  const addBlog = (e) => {
-    e.preventDefault()
-
-    createBlog({
-      title, author, url
-    })
-
-    setTitle('')
-    setAuthor('')
-    setUrl('')
-  }
-
   return (
-    <form onSubmit={addBlog}>
+    <form onSubmit={(e) => createBlog(e, title, author, url)}>
       <h2> create new </h2>
       <div>
         title:
         <input
           value={title}
+          id="title"
           type="text"
           name="title"
           required
@@ -35,6 +24,7 @@ const Blogform = ({ createBlog }) => {
         <input
           value={author}
           type="text"
+          id="author"
           name="author"
           required
           onChange={({ target }) => setAuthor(target.value)}
@@ -44,6 +34,7 @@ const Blogform = ({ createBlog }) => {
         url:
         <input
           value={url}
+          id="url"
           type="text"
           name="url"
           onChange={({ target }) => setUrl(target.value)}

@@ -41,7 +41,12 @@ const App = () => {
     )
   }
 
-  const addBlog = async (blogObj) => {
+  const addBlog = async (event, title, author, url) => {
+    event.preventDefault()
+    const blogObj = {
+      title, author, url
+    }
+
     blogFormRef.current.toggleVisibility()
     try {
       const newBlog = await blogService.create(blogObj)
